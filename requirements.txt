@@ -1,0 +1,8 @@
+fastapi
+pymongo
+pillow
+pandas
+uvicorn
+motor
+controller
+opencv-python
