@@ -1,28 +1,23 @@
-version: '3.5'
-
+version: '3.8'
 services:
+  # Application service
+  web:
+    build:
+      context: .
+      args:
+        requirements_file: requirements/local.txt
+    stdin_open: true
+    tty: true
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - ./data:/data
+    restart: always
+    networks:
+      - app-network
 
- web_dev:
-  build: ./app
-  ports:
-   - "5000:5000"
-  volumes:
-   - ./app:/app
-  environment:
-   - DB=mongodb://mongodb:27017
-
- mongodb:
-  image: mongo:latest
-  container_name: "mongodb"
-  environment:
-   - MONGO_DATA_DIR=/usr/data/db
-   - MONGO_LOG_DIR=/dev/null
-  volumes:
-   - ./data/db:/usr/data/db
-  ports:
-   - 27017:27017
-  command: mongod --smallfiles --logpath=/dev/null # --quiet
 
 networks:
- default:
-  name: web_dev
+  app-network:
+    driver: bridge
